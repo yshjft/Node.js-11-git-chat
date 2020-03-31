@@ -3,7 +3,7 @@ const path=require('path');
 const morgan=require('morgan');
 const cookieParser=require('cookie-parser');
 const session=require('express-session');
-const flash=requrie('connect-flash');
+const flash=require('connect-flash');
 require('dotenv').config();
 
 const webSocket=require('./socket');
@@ -47,7 +47,8 @@ app.use((err, req, res, next)=>{
 });
 
 const server=app.listen(app.get('port'), ()=>{
-  console.log(app.get('port'));
-});
+  console.log(app.get('port'), '번 포트에서 대기 중');
+}); // listen() : https://www.w3schools.com/nodejs/met_server_listen.asp
+
 
 webSocket(server);
