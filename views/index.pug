@@ -24,7 +24,8 @@ html
     script(src='/socket.io/socket.io.js')
     script.
       var socket=io.connect('http://localhost:8052', {
-        path:'/socket.io',
+        path:'/socket.io', //서버측과 일치해야만함
+        //- transport:['websocket']
       });
       socket.on('news', function(data){
         console.log(data);
