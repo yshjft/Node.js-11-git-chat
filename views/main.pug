@@ -23,5 +23,51 @@ block content
   .error-message=error
   a(href='/room') 채팅방 생성
   script(src='/socket.io./socket.io.js')
-  scirpt.
-  
+  script.
+    var socket=io.connect('http://localhost:8052/room',{
+      path: '/sokcet.io'
+    });
+    socket.on('newRoom', function(data){
+      var tr=documnet.createElement('tr');
+      var td=document.createElement('td');
+      td.textContent=data.title;
+      tr.appendChild(td);
+      td=document.createElement('td');
+      td.textContent = data.password ? '비밀방' : '공개방';
+      tr.appendChild(td);
+      td = document.createElement('td');
+      td.textContent = data.max;
+      tr.appendChild(td);
+      td = document.createElement('td');
+      td.style.color = data.owner;
+      td.textContent = data.owner;
+      tr.appendChild(td);
+      td = document.createElement('td');
+      var button = document.createElement('button');
+      button.textContent = '입장';
+      button.dataset.password = data.password ? 'true' : 'false';
+      button.dataset.id = data._id;
+      button.addEventListener('click', addBtnEvent);
+      td.appendChild(button);
+      tr.appendChild(td);
+      tr.dataset.id = data._id;
+      document.querySelector('table tbody').appendChild(tr);
+    })
+    socket.on('removeRoom', function(data){
+      document.querySelectorAll('tbody tr').forEach(function(tr){
+        if(tr.dataset.id === data){
+          tr.parentNode.removeChilde(tr);
+        }
+      });
+    });
+    function addBtnEvent(e){
+      if(e.target.dataset.pasword=='true'){
+        const password= prompt('비밀번호를 입력하세요');
+        location.href = '/room/' + e.target.dataset.id + '?password=' + password;
+      } else {
+        location.href = '/room/' + e.target.dataset.id;
+      }
+    }
+    doumnet.querySelectorAll('/join-btn').forEach(function(btn){
+      btn.addEventListener('click', addBtnEvent);
+    )}
