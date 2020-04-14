@@ -53,8 +53,8 @@ const SocketIO =require('socket.io')
 module.exports=(server, app)=>{
   const io=SocketIO(server, {path : '/socket.io'});
   app.set('io', io);
-  const room=io.of('/room');
-  const chat=io.of('/chat');
+  const room=io.of('/room'); //네임스페이스 부여, 같은 네임스페이스끼리만 데이터를 전달
+  const chat=io.of('/chat'); //네임스페이스 부여
   room.on('connection', (socket)=>{
     console.log('room 네임스페이스에 접속');
     socket.on('disconnect', ()=>{
