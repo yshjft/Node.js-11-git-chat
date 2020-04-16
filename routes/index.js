@@ -15,4 +15,8 @@ router.get('/', async(req, res, next) => {
   }
 });
 
+router.get('/room', (req, res)=>{
+  res.render('room', {title : 'GIF 채팅방 생성'});
+});
+
 module.exports=router;
