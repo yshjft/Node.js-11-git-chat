@@ -36,4 +36,25 @@ router.post('/room', async(req, res, next)=>{
   }
 }); //채팅방을 만드는 라우터
 
+router.get('/room/:id', async(req, res, next)=>{
+  try{
+    const room=await Room.findOne({id: req.params.id});
+    const io=req.app.get('io');
+    if(!room ){
+      req.flash('roomError', '존재하지 않는 방입니다');
+      return res.redirect('/');
+    }
+    if(room.password && room.password!==req.query.password){
+      req.flash('roomError', '비밀번호가 틀렸습니다.');
+      return res.redirect('/');
+    }
+    const{rooms}=io.of('/chat').adapter;
+
+    
+  }catch(error){
+    console.error(error);
+    return next(error);
+  }
+});
+
 module.exports=router;
