@@ -5,34 +5,34 @@ block content
   fieldset
     legend 채팅방 목록
     table
-      thread
+      thead
         tr
-          th 방제목
+          th 방 제목
           th 종류
           th 허용 인원
           th 방장
-        tbody
-          for room in rooms
-            tr(data-id=room._id)
-              td=room.title
-              td=room.password ? '비밀방' : '공개방'
-              td=room.max
-              td(style='color:'+room.owner)=room.owner
-              -var password=room.password? 'true' : 'false';
-              td: button(data-password=password data-id=room._id).join-btn 입장
-  .error-message=error
+      tbody
+        for room in rooms
+          tr(data-id=room._id)
+            td= room.title
+            td= room.password ? '비밀방' : '공개방'
+            td= room.max
+            td(style='color:' + room.owner)= room.owner
+            -var password = room.password ? 'true' : 'false';
+            td: button(data-password=password data-id=room._id).join-btn 입장
+  .error-message= error
   a(href='/room') 채팅방 생성
-  script(src='/socket.io./socket.io.js')
+  script(src='/socket.io/socket.io.js')
   script.
-    var socket=io.connect('http://localhost:8052/room',{
-      path: '/sokcet.io'
+    var socket = io.connect('http://localhost:8005/room', {
+      path: '/socket.io'
     });
-    socket.on('newRoom', function(data){
-      var tr=documnet.createElement('tr');
-      var td=document.createElement('td');
-      td.textContent=data.title;
+    socket.on('newRoom', function (data) {
+      var tr = document.createElement('tr');
+      var td = document.createElement('td');
+      td.textContent = data.title;
       tr.appendChild(td);
-      td=document.createElement('td');
+      td = document.createElement('td');
       td.textContent = data.password ? '비밀방' : '공개방';
       tr.appendChild(td);
       td = document.createElement('td');
@@ -52,22 +52,22 @@ block content
       tr.appendChild(td);
       tr.dataset.id = data._id;
       document.querySelector('table tbody').appendChild(tr);
-    })
-    socket.on('removeRoom', function(data){
-      document.querySelectorAll('tbody tr').forEach(function(tr){
-        if(tr.dataset.id === data){
-          tr.parentNode.removeChilde(tr);
+    });
+    socket.on('removeRoom', function (data) {
+      document.querySelectorAll('tbody tr').forEach(function (tr) {
+        if (tr.dataset.id === data) {
+          tr.parentNode.removeChild(tr);
         }
       });
     });
-    function addBtnEvent(e){
-      if(e.target.dataset.pasword=='true'){
-        const password= prompt('비밀번호를 입력하세요');
+    function addBtnEvent(e) {
+      if (e.target.dataset.password === 'true') {
+        const password = prompt('비밀번호를 입력하세요');
         location.href = '/room/' + e.target.dataset.id + '?password=' + password;
       } else {
         location.href = '/room/' + e.target.dataset.id;
       }
     }
-    doumnet.querySelectorAll('/join-btn').forEach(function(btn){
+    document.querySelectorAll('.join-btn').forEach(function (btn) {
       btn.addEventListener('click', addBtnEvent);
-    )}
+    });

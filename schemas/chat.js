@@ -15,7 +15,7 @@ const chatSchema=new Schema({
   chat:String, //채팅 내역
   gif:String, //GIF 이미지 주소
   createdAt:{
-    type:DataCue,
+    type:Date,
     default:Date.now,
   }, //채팅 시간을 저장
 });
